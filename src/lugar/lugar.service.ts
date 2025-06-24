@@ -25,7 +25,7 @@ export class LugarService {
   }
 
   async findOne(id: number) {
-   // return `This action returns a #${id} lugar`;
+  return this.prisma.lugar.findUnique({where:{id}})
   }
 
   async update(id: number, updateLugarDto: UpdateLugarDto) {
