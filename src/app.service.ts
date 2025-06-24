@@ -2,16 +2,13 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  smsLoading: string = 'app loading :)!'
+  smsLoading: string = ' Running successful 🎉'
   getHello(): string {
     return this.smsLoading;
   }
 
 
 }
-
-
-
   /**
    * 
    * @returns 
