@@ -5,7 +5,7 @@ import { LugarModule } from './lugar/lugar.module';
 import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [LugarModule, PrismaModule],
+  imports: [LugarModule, PrismaModule, PrismaModule],
   controllers: [AppController],
   providers: [AppService],
   exports:[AppService]

@@ -1,11 +1,12 @@
-import { IsOptional, IsString } from "class-validator";
+import { IsEnum, IsOptional, IsString } from "class-validator";
+import { tipoLugares } from "generated/prisma";
 
 export class CreateLugarDto {
     @IsString() 
     nome: string;
 
-    @IsString() 
-    tipo:string;
+    @IsEnum(tipoLugares) 
+    tipo:tipoLugares;
 
     @IsString()
     @IsOptional()
