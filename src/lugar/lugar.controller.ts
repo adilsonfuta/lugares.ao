@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
 import { LugarService } from './lugar.service';
 import { CreateLugarDto } from './dto/create-lugar.dto';
 import { UpdateLugarDto } from './dto/update-lugar.dto';
@@ -23,6 +23,11 @@ export class LugarController {
   }
 
   @Patch(':id')
+  updatePatch(@Param('id') id: string, @Body() updateLugarDto: UpdateLugarDto) {
+    return this.lugarService.updatePatch(+id, updateLugarDto);
+  }
+
+  @Put(':id')
   update(@Param('id') id: string, @Body() updateLugarDto: UpdateLugarDto) {
     return this.lugarService.update(+id, updateLugarDto);
   }
