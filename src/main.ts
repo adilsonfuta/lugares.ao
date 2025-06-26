@@ -11,7 +11,6 @@ async function main() {
   app.enableCors();
 
 // # config app swagger docs api
-
 const config = new DocumentBuilder()
 .setTitle('Api de Lugares')
 .setDescription('Api com documentacao estilo open api')
