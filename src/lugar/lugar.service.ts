@@ -29,14 +29,44 @@ export class LugarService {
   }
 
   async update(id: number, updateLugarDto: UpdateLugarDto) {
-    return `This action updates a #${id} lugar`;
-  }
+    return this.prisma.lugar.update({
+  where: {
+    // ... provide filter here
+    id
+  },
+  data: updateLugarDto}) }
 
   async updatePatch(id: number, updateLugarDto: UpdateLugarDto) {
-    return `This action updates a #${id} lugar`;
+
+    
+
+    return this.prisma.lugar.update({
+      data:updateLugarDto,where:{id}
+    })
   }
 
   async remove(id: number) {
     return this.prisma.lugar.delete({where:{id}});
   }
 }
+
+
+/** 
+ * 
+ * 
+ *   async update(id: number, updateLugarDto: UpdateLugarDto) {
+    return this.prisma.lugar.update({
+  where: {
+    // ... provide filter here
+    id
+  },
+  data: {
+    // ... provide data here
+      nome: updateLugarDto.nome,
+      tipo: updateLugarDto.tipo,
+      descricao: updateLugarDto.descricao,
+      localizacao: updateLugarDto.localizacao,
+      imagemUrl: updateLugarDto.imagemUrl
+
+  }}) }
+*/
