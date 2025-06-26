@@ -38,8 +38,6 @@ export class LugarService {
 
   async update(id: number, updateLugarDto: UpdateLugarDto) {
     await this.ExistId(id);
-
-    //updateLugarDto.updatedAt = new Date();
     return this.prisma.lugar.update({
     where: {id },
     data: updateLugarDto}) 
@@ -54,10 +52,6 @@ export class LugarService {
     if(updateLugarDto.localizacao){ novoLugar.localizacao=updateLugarDto.localizacao; }
     if(updateLugarDto.imagemUrl){ novoLugar.imagemUrl=updateLugarDto.imagemUrl; }
     
-    //criar uma metodo hora atual do sistema para campo updateAt
-    // updateLugarDto.updatedAt = new Date();
-    //novoLugar.nome = updateLugarDto.updatedAt;
-
     await this.ExistId(id);
     return this.prisma.lugar.update({
       data:novoLugar,where:{id}
