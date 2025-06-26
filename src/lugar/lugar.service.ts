@@ -38,10 +38,19 @@ export class LugarService {
 
   async updatePatch(id: number, updateLugarDto: UpdateLugarDto) {
 
+    const novoLugar:any = {};
+    if(updateLugarDto.nome){ novoLugar.nome=updateLugarDto.nome; }
+    if(updateLugarDto.tipo){ novoLugar.tipo=updateLugarDto.tipo; }
+    if(updateLugarDto.descricao){ novoLugar.descricao=updateLugarDto.descricao; }
+    if(updateLugarDto.localizacao){ novoLugar.localizacao=updateLugarDto.localizacao; }
+    if(updateLugarDto.imagemUrl){ novoLugar.imagemUrl=updateLugarDto.imagemUrl; }
     
+    //criar uma metodo hora atual do sistema para campo updateAt
+    // updateLugarDto.updatedAt = new Date();
+    //novoLugar.nome = updateLugarDto.updatedAt;
 
     return this.prisma.lugar.update({
-      data:updateLugarDto,where:{id}
+      data:novoLugar,where:{id}
     })
   }
 

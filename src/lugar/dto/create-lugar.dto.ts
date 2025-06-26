@@ -19,4 +19,8 @@ export class CreateLugarDto {
     @IsOptional() 
     imagemUrl?: string;
 
+    @IsString()
+    @IsOptional()
+    updatedAt?:string;
+
 }
