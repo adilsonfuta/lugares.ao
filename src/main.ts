@@ -20,7 +20,7 @@ const config = new DocumentBuilder()
 const document = SwaggerModule.createDocument(app,config);
 SwaggerModule.setup('api',app,document);
 
-  await app.listen(process.env.PORT ?? 3000);
-  console.log(`${new AppService().smsLoading} Port ${process.env.PORT}`);
+  await app.listen(process.env.APP_PORT ?? 3000);
+  console.log(`${new AppService().smsLoading} Port ${process.env.APP_PORT}`);
 }
 main();
