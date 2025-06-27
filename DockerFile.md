@@ -9,14 +9,11 @@ COPY ./.env.production ./.env
 RUN npm install --quiet --no-optional --no-fund --loglevel=error
 
 # Gere o cliente Prisma
-# RUN npx prisma generate
+RUN npx prisma generate
 
 RUN npm run build
 
-ARG APP_PORT
-
-ENV APP_PORT=${APP_PORT:-3000}
-
-EXPOSE $APP_PORT 
+# EXPOSE ${PORT:-3000}
+EXPOSE 3333 
 
 CMD ["npm","run","start:prod"]
