@@ -10,15 +10,15 @@ async function main() {
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors();
 
-// # config app swagger docs api
-const config = new DocumentBuilder()
-.setTitle('Api de Lugares')
-.setDescription('Api com documentacao estilo open api')
-.setVersion('1.0')
-.build();
+  // # config app swagger docs api
+  const config = new DocumentBuilder()
+    .setTitle('Api de Lugares')
+    .setDescription('Api com documentacao estilo open api')
+    .setVersion('1.0')
+    .build();
 
-const document = SwaggerModule.createDocument(app,config);
-SwaggerModule.setup('api',app,document);
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.APP_PORT ?? 3000);
   console.log(`${new AppService().smsLoading} Port ${process.env.APP_PORT}`);
