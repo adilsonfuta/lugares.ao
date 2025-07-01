@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production} # Fallback para 'production' se não definido
+    ports:
+      - "${APP_PORT:-3000}:${APP_PORT:-3000}" # Fallback para porta 3000
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-nestdb}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${DB_PORT:-5432}:5432"
+
+volumes:
+  postgres_data:

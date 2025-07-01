@@ -7,10 +7,12 @@
 generator client {
   provider = "prisma-client-js"
   output   = "../generated/prisma"
+  binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
+//provider = "mysql"
 datasource db {
-  provider = "mysql"
+  provider = env("PROVIDER")
   url      = env("DATABASE_URL")
 }
 
