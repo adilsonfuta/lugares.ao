@@ -9,7 +9,7 @@ export class CreateLugarDto {
     nome: string;
 
     @IsEnum(tipoLugares) 
-    @ApiProperty({description: 'tipo de lugares', example: 'praia'})
+    @ApiProperty({description: 'tipo de lugares', example: 'praia' })
     tipo:tipoLugares;
  
     @IsString()

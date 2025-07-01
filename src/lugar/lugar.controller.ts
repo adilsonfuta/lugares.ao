@@ -2,16 +2,18 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/
 import { LugarService } from './lugar.service';
 import { CreateLugarDto } from './dto/create-lugar.dto';
 import { UpdateLugarDto } from './dto/update-lugar.dto';
-import { ApiBadRequestResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBadRequestResponse, ApiBearerAuth, ApiNotFoundResponse, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 //@ApiTags('Lugares api')
 @Controller('lugar')
+@ApiBearerAuth() // add beare token doc api
 export class LugarController {
   constructor(private readonly lugarService: LugarService) {}
 
   @ApiOperation({summary: 'used to create places'})
-  @ApiResponse({status: 201, description: 'Create Place', type: CreateLugarDto})
+  @ApiResponse({status: 201, description: 'The record has been successfully created.', type: CreateLugarDto})
   @ApiBadRequestResponse({description:'Bad Payload send'})
+  @ApiResponse({ status: 403, description: 'Forbidden.'})
   @Post()
   create(@Body() createLugarDto: CreateLugarDto) {
     return this.lugarService.create(createLugarDto);

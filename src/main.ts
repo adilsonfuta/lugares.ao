@@ -15,6 +15,8 @@ async function main() {
     .setTitle('Api de Lugares')
     .setDescription('Api com documentacao estilo open api')
     .setVersion('1.0')
+    .addBearerAuth()
+    .addGlobalResponse({ status: 500, description: 'Internal server error',})
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
