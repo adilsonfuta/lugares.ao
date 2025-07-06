@@ -1,28 +1,103 @@
-name: NodeJS with Webpack
+name: NodeJS CI/CD with Webpack
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "master", "main" , "develop"]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "master", "main",  "develop"]
+
+env:
+  CI: true
+  NODE_ENV: production
 
 jobs:
-  build:
+  build-and-test:
+    name: Build and Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
         node-version: [18.x, 20.x, 22.x]
-
+    
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Setup Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
-    - name: Build
+    - name: Cache dependencies
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.npm
+          node_modules
+          **/node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run linting
+      run: npm run lint
+
+    - name: Run tests
+      run: npm test
+
+    - name: Build with Webpack
       run: |
-        npm install
-        npx webpack
+        npm run build:prod
+        ls -la dist/
+
+    - name: Security audit
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: |
+          npm-audit-report.html
+        if-no-files-found: error
+
+    - name: Run SonarCloud analysis
+      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+      uses: sonarsource/sonarcloud-github-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  deploy:
+    name: Deploy to Production
+    needs: build-and-test
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: webpack-build
+        path: dist
+
+    - name: Deploy to server
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.SSH_HOST }}
+        username: ${{ secrets.SSH_USERNAME }}
+        key: ${{ secrets.SSH_PRIVATE_KEY }}
+        script: |
+          cd /var/www/your-app
+          git pull origin master
+          npm ci --production
+          pm2 restart your-app
